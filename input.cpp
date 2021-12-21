@@ -50,7 +50,6 @@ void quickSort(freq *chr, int low, int high)
 int getFreq(freq *chr, string inputStr){
     int chrCount = 0;
     for (int i = 0; i<inputStr.size(); i++){
-        cout<<inputStr[i];
         bool flg = false;
         for(int j = 0; j<= chrCount; j++){
             if(chr[j].c == inputStr[i]){

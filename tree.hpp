@@ -54,20 +54,21 @@ Node* Tree::constructTree(stack<Node*> main){       // recursive function for co
     main.pop();
 
     stack<Node*> aux;   // define an auxilary stack to store bigger nodes that are on front
-
-    while((prev->value > next->value) && !(main.empty())){   // check for the optimum nodes as child
-        aux.push(prev);
-        prev = curr;
-        curr = next;
-        next = main.top();
-        main.pop();
-    }
-    while(!(main.empty()) && (next->value < main.top()->value)){
-        aux.push(prev);
-        prev = curr;
-        curr = next;
-        next = main.top();
-        main.pop();
+    if((prev->value > next->value) && !(main.empty())){
+        while((prev->value > next->value) && !(main.empty())){   // check for the optimum nodes as child
+            aux.push(prev);
+            prev = curr;
+            curr = next;
+            next = main.top();
+            main.pop();
+        }
+        while(!(main.empty()) && (next->value < main.top()->value)){ // TODO fix this is not correct
+            aux.push(prev);
+            prev = curr;
+            curr = next;
+            next = main.top();
+            main.pop();
+        }
     }
     if(main.empty()){
         if(next->value < prev->value){

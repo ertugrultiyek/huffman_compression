@@ -16,7 +16,7 @@ int main(){
     string inputStr = "abcdabcdaaaaabccccccccccccccccccccccccccccccddacccccccccccccccccccccccccccccccccccccccccc";    // get input data
 
     ofstream unc;
-    unc.open("uncompressed.txt", ios::app | ios::binary);    // open the output file
+    unc.open("uncompressed.txt", ios::out);    // open the output file
     unc<<inputStr;
     unc.close();
 
@@ -26,13 +26,13 @@ int main(){
     Tree agac =  Tree(chrArr, len);         // construct a binary tree to encode the data
 
     ofstream compressed;
-    compressed.open("compressedMsg.txt", ios::app | ios::binary);    // open the output file
+    compressed.open("compressedMsg.txt", ios::out | ios::binary);    // open the output file
 
     enc table[len];
     int count = 0;
     agac.serializeTree(compressed, agac.root, table, &count, 0, 0b00000000, &buffer, &buffCount);              // serialize the tree for decoding
     
-    cout<<endl<<endl;
+    //cout<<endl<<endl;
 
     for (int i = 0; i<inputStr.size(); i++){
           encodeMsg(compressed, table, count, inputStr[i], &buffer, &buffCount);
