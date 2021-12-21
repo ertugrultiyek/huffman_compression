@@ -17,6 +17,9 @@ struct enc{
     Byte code;
 };
 
+void outBuffer(unsigned char *buff, int *count, ofstream &file, bool target);
+
+
 class Tree
 {
 private:
@@ -26,7 +29,7 @@ public:
 
     Tree(freq* leafs, int size);    
     Node* constructTree(stack<Node*> main);
-    void serializeTree(ofstream &file, Node *parent, enc *table, int *count, int len, Byte code);
+    void serializeTree(ofstream &file, Node *parent, enc *table, int *count, int len, Byte code, unsigned char *buff, int *buffCount);
 };
 
 Node* Tree::constructTree(stack<Node*> main){       // recursive function for constructing the tree
@@ -102,7 +105,7 @@ Tree::Tree(freq* leafs, int size)
     root = constructTree(leaf); // construct the tree from leafs
 }
 
-void Tree::serializeTree(ofstream &file, Node *parent, enc *table, int *count, int len, Byte code){
+void Tree::serializeTree(ofstream &file, Node *parent, enc *table, int *count, int len, Byte code, unsigned char *buff, int *buffCount){
     if(parent == nullptr){
         return;
     }
@@ -112,20 +115,34 @@ void Tree::serializeTree(ofstream &file, Node *parent, enc *table, int *count, i
         table[*count].code = code;
         *count = *count+1;
 
-        file<<0b00<<parent->item;
+        outBuffer(buff, buffCount, file, false);
+        outBuffer(buff, buffCount, file, false);
+        for (int i = 7; i>=0; i--){
+            outBuffer(buff, buffCount, file, (parent->item >> i) & 1);
+        }
+
+
+        // file<<0b00<<parent->item;
         return;
     }
 
     len++;
 
-    file<<0b10;
+    // file<<0b10;
+    outBuffer(buff, buffCount, file, true);
+    outBuffer(buff, buffCount, file, false);
+
+
     Byte temp = code;
     temp<<=1;
-    serializeTree(file, parent->left, table, count, len, temp);
+    serializeTree(file, parent->left, table, count, len, temp, buff, buffCount);
 
-    file<<0b01;
+    // file<<0b01;
+    outBuffer(buff, buffCount, file, false);
+    outBuffer(buff, buffCount, file, true);
+
     temp.set(0);
-    serializeTree(file, parent->right, table, count, len, temp);
+    serializeTree(file, parent->right, table, count, len, temp, buff, buffCount);
     return;
 }
 
