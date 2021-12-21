@@ -3,13 +3,14 @@
 #include<bitset>
 #include "tree.hpp"
 #include "input.cpp"
+#include "encode.cpp"
 using namespace std;
 
-ofstream compressed;
+
 
 int main(){
 
-    string inputStr = "input string sikistirilacak";    // get input data
+    string inputStr = "bu 78 karakterden olusan bir stringdir. ascii ile kodlanmis boyutu 632 bitdir.";    // get input data
 
 
     freq chrArr[inputStr.size()];
@@ -17,16 +18,17 @@ int main(){
 
     Tree agac =  Tree(chrArr, len);         // construct a binary tree to encode the data
 
+    ofstream compressed;
+    compressed.open("compressedMsg.bin", ios::app | ios::binary);    // open the output file
+
     enc table[len];
     int count = 0;
-
-    // compressed.open("compressedMsg.txt", ios_base::app);    // open the output file
-    agac.serializeTree(agac.root, table, &count, 0, 0b00000000);              // serialize the tree for decoding
+    agac.serializeTree(compressed, agac.root, table, &count, 0, 0b00000000);              // serialize the tree for decoding
     
     cout<<endl<<endl;
 
-    for (int i = 0; i<count; i++){
-        cout<< table[i].c << "\t:\t"<<table[i].code<<endl;
+    for (int i = 0; i<inputStr.size(); i++){
+        encodeMsg(compressed, table, count, inputStr[i]);
     }
     return 0;
 }

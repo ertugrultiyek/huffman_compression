@@ -26,7 +26,7 @@ public:
 
     Tree(freq* leafs, int size);    
     Node* constructTree(stack<Node*> main);
-    void serializeTree(Node *parent, enc *table, int *count, int len, Byte code);
+    void serializeTree(ofstream &file, Node *parent, enc *table, int *count, int len, Byte code);
 };
 
 Node* Tree::constructTree(stack<Node*> main){       // recursive function for constructing the tree
@@ -102,7 +102,7 @@ Tree::Tree(freq* leafs, int size)
     root = constructTree(leaf); // construct the tree from leafs
 }
 
-void Tree::serializeTree(Node *parent, enc *table, int *count, int len, Byte code){
+void Tree::serializeTree(ofstream &file, Node *parent, enc *table, int *count, int len, Byte code){
     if(parent == nullptr){
         return;
     }
@@ -112,20 +112,20 @@ void Tree::serializeTree(Node *parent, enc *table, int *count, int len, Byte cod
         table[*count].code = code;
         *count = *count+1;
 
-        cout<<"00"<<parent->item;
+        file<<0b00<<parent->item;
         return;
     }
 
     len++;
 
-    cout<<"10";
+    file<<0b10;
     Byte temp = code;
     temp<<=1;
-    serializeTree(parent->left, table, count, len, temp);
+    serializeTree(file, parent->left, table, count, len, temp);
 
-    cout<<"01";
+    file<<0b01;
     temp.set(0);
-    serializeTree(parent->right, table, count, len, temp);
+    serializeTree(file, parent->right, table, count, len, temp);
     return;
 }
 
