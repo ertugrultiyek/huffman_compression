@@ -1,5 +1,6 @@
 #include<iostream>
 #include<fstream>
+#include<bitset>
 #include "tree.hpp"
 #include "input.cpp"
 using namespace std;
@@ -16,8 +17,16 @@ int main(){
 
     Tree agac =  Tree(chrArr, len);         // construct a binary tree to encode the data
 
-    compressed.open("compressedMsg.txt", ios_base::app);    // open the output file
-    agac.serializeTree(agac.root);              // serialize the tree for decoding
+    enc table[len];
+    int count = 0;
 
+    // compressed.open("compressedMsg.txt", ios_base::app);    // open the output file
+    agac.serializeTree(agac.root, table, &count, 0, 0b00000000);              // serialize the tree for decoding
+    
+    cout<<endl<<endl;
+
+    for (int i = 0; i<count; i++){
+        cout<< table[i].c << "\t:\t"<<table[i].code<<endl;
+    }
     return 0;
 }
