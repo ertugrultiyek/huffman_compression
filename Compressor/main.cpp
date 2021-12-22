@@ -1,10 +1,4 @@
-#include "encode.cpp"
-// #include<iostream>
-// #include<fstream>
-// #include<bitset>
-// #include "tree.hpp"
-// #include "input.cpp"
-// using namespace std;
+#include "sources/encode.cpp"
 
 
 
@@ -30,13 +24,18 @@ int main(){
 
     enc table[len];
     int count = 0;
-    agac.serializeTree(compressed, agac.root, table, &count, 0, 0b00000000, &buffer, &buffCount);            // serialize the tree for decoding
-    outBuffer(&buffer, &count, compressed, true);
-    outBuffer(&buffer, &count, compressed, true);
+    agac.serializeTree(compressed, agac.root, table, &count, 0, 0b00000000, &buffer, &buffCount);              // serialize the tree for decoding
+		outBuffer(&buffer, &buffCount, compressed, true);
+		outBuffer(&buffer, &buffCount, compressed, true);
 
     for (int i = 0; i<inputStr.size(); i++){
           encodeMsg(compressed, table, count, inputStr[i], &buffer, &buffCount);
     }
+		if(buffCount != 0){
+			for(int i = 8-buffCount; i>=1; i--){
+				outBuffer(&buffer, &buffCount, compressed, false);
+			}
+		}
     compressed.close();
     return 0;
 }
