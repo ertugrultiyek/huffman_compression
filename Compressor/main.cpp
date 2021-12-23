@@ -8,6 +8,7 @@ int main(){
 
 
     string inputStr = "abcdabcdaaaaabccccccccccccccccccccccccccccccddacccccccccccccccccccccccccccccccccccccccccc";    // get input data
+    inputStr.push_back(0x00);
 
     ofstream unc;
     unc.open("uncompressed.txt", ios::out);    // open the output file
