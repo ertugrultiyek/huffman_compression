@@ -26,8 +26,7 @@ int main(){
     enc table[len];
     int count = 0;
     agac.serializeTree(compressed, agac.root, table, &count, 0, 0b00000000, &buffer, &buffCount);              // serialize the tree for decoding
-		outBuffer(&buffer, &buffCount, compressed, true);
-		outBuffer(&buffer, &buffCount, compressed, true);
+
 
     for (int i = 0; i<inputStr.size(); i++){
           encodeMsg(compressed, table, count, inputStr[i], &buffer, &buffCount);

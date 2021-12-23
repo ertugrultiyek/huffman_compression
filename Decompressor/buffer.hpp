@@ -1,5 +1,7 @@
 #ifndef BUFFER_H
 #define BUFFER_H
+
+#include"node.hpp"
 /*
 try to make file decleration out of the object
 */
@@ -8,60 +10,80 @@ class Buffer{
 private:
 
 public:
-    ifstream file;
     unsigned char byte;
     int bitCount;
 
     Buffer();
-    void readNext();
-    bitset<2> getCommand();
-    char getChar();
+    void readNext(ifstream &file);
+    bool getCommand(ifstream &file);
+    char getChar(ifstream &file);
+    char decodeChr(Node *root, ifstream &file);
+    string decodeMsg(Node *root, ifstream &file);
 };
 
 Buffer::Buffer(){
-    file.open("compressedMsg.txt");
-    bitCount = 7;
+    bitCount = -1;
 }
 
-void Buffer::readNext(){
+void Buffer::readNext(ifstream &file){
     char temp;
     file.get(temp);
     byte = (unsigned char) temp;
     bitCount = 7;
 }
 
-bitset<2> Buffer::getCommand(){
-    bitset<2> cmd;
-    for (int i = 0; i< 2; i++){
-        if(bitCount+1){
-            cmd[1-i] = ((byte >> (bitCount-i)) & 0x1);
-        }
-        else{
-            readNext();
-            cmd[1-i] = ((byte >> (bitCount-i)) & 0x1);
-        }
-        bitCount--;
+bool Buffer::getCommand(ifstream &file){
+    bool cmd;
+    if(bitCount<0){
+        readNext(file);
     }
+    cmd = ((byte >> (bitCount)) & 0x1);
+    bitCount--;
     return cmd;
 }
 
-char Buffer::getChar(){
-    if(bitCount == 7){
+char Buffer::getChar(ifstream &file){
+    if(bitCount == -1){
+        readNext(file);
+        bitCount = -1;
+        return((char) byte);
+    }
+    else if(bitCount == 7){
+        bitCount = -1;
         return((char) byte);
     }
     unsigned char c = 0;
     for(int i = 0; i<8; i++){
         if(bitCount <0){
-            readNext();
+            readNext(file);
         }
-        if(((byte >> (bitCount-i)) & 0x1))
+        if(((byte >> (bitCount)) & 0x1))
             c |= 1 << i;
         else
             c &= ~(1 << i);
         bitCount--;
     }
-    return((char) byte);
+    return((char) c);
 }
 
+char Buffer::decodeChr(Node *root, ifstream &file){
+    if(root == nullptr){
+        return 'e';
+    }
+    if(root->left==nullptr){
+        return root->item;
+    }
+    if(getCommand(file))
+        return decodeChr(root->right, file);
+    else
+        return decodeChr(root->left, file);
+}
+
+string Buffer::decodeMsg(Node *root, ifstream &file){
+    string msg = "";
+    for(char c = decodeChr(root, file); (int)c != 0; c = decodeChr(root, file)){
+        msg += c;
+    }
+}
 
 #endif

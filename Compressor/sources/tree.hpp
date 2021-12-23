@@ -116,31 +116,20 @@ void Tree::serializeTree(ofstream &file, Node *parent, enc *table, int *count, i
         table[*count].code = code;
         *count = *count+1;
 
-        outBuffer(buff, buffCount, file, false);
-        outBuffer(buff, buffCount, file, false);
+        outBuffer(buff, buffCount, file, true);
         for (int i = 7; i>=0; i--){
             outBuffer(buff, buffCount, file, (parent->item >> i) & 1);
         }
-
-
-        // file<<0b00<<parent->item;
         return;
     }
 
     len++;
 
     // file<<0b10;
-    outBuffer(buff, buffCount, file, true);
     outBuffer(buff, buffCount, file, false);
-
-
     Byte temp = code;
     temp<<=1;
     serializeTree(file, parent->left, table, count, len, temp, buff, buffCount);
-
-    // file<<0b01;
-    outBuffer(buff, buffCount, file, false);
-    outBuffer(buff, buffCount, file, true);
 
     temp.set(0);
     serializeTree(file, parent->right, table, count, len, temp, buff, buffCount);
