@@ -84,6 +84,7 @@ string Buffer::decodeMsg(Node *root, ifstream &file){
     for(char c = decodeChr(root, file); (int)c != 0; c = decodeChr(root, file)){
         msg += c;
     }
+    return msg;
 }
 
 #endif

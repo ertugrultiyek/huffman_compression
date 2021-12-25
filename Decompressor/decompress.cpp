@@ -11,9 +11,16 @@ int main(){
     file.open("compressedMsg.txt");
     Buffer reader = Buffer();
 
-    Tree agac = Tree(&reader, file);
+    for(int i = 0; i<21*8; i++){
+        cout << reader.getCommand(file);
+    }
 
-    // cout<<reader.decodeChr(agac.root, file);
+    // Tree agac = Tree(&reader, file);
+
+
+
+    // cout<<reader.decodeMsg(agac.root, file);
+
 
     return 0;
 }

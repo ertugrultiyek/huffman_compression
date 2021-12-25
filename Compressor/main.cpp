@@ -7,7 +7,7 @@ int main(){
     int buffCount = 0;
 
 
-    string inputStr = "abcdabcdaaaaabccccccccccccccccccccccccccccccddacccccccccccccccccccccccccccccccccccccccccc";    // get input data
+    string inputStr = "abcabcddeeabceeeeddee";    // get input data
     inputStr.push_back(0x00);
 
     ofstream unc;

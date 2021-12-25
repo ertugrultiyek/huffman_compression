@@ -27,7 +27,11 @@ Node* Tree::constructTree(Buffer *reader, ifstream &file){
         parent->item = c;
     }
     else{
-        parent->right = constructTree(reader, file);
+        parent->right = new Node(0, constructTree(reader, file), nullptr);
+        if (parent->right->left == nullptr){
+            char c = reader->getChar(file);
+            parent->right->item = c;
+        }
     }
     return parent;
 }
