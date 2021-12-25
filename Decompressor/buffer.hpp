@@ -43,7 +43,7 @@ bool Buffer::getCommand(ifstream &file){
 }
 
 char Buffer::getChar(ifstream &file){
-    if(bitCount == -1){
+    if(bitCount < 0){
         readNext(file);
         bitCount = -1;
         return((char) byte);
@@ -53,7 +53,7 @@ char Buffer::getChar(ifstream &file){
         return((char) byte);
     }
     unsigned char c = 0;
-    for(int i = 0; i<8; i++){
+    for(int i = 7; i>=0; i--){
         if(bitCount <0){
             readNext(file);
         }
