@@ -11,16 +11,20 @@ int main(){
     file.open("compressedMsg.txt");
     Buffer reader = Buffer();
 
-    // for(int i = 0; i<21*8; i++){
-    //     cout << reader.getCommand(file);
-    // }
-
     Tree agac = Tree(&reader, file);
 
+    string output = reader.decodeMsg(agac.root, file);
 
+    ofstream outFile;
+    outFile.open("decompressedMsg.txt", ios::out);
+    outFile<<output;
+    outFile.close();
 
-    cout<<reader.decodeMsg(agac.root, file);
-
+    cout<<"MESSAGE:"<<endl<<endl;
+    cout<<output;
+    cout<<endl<<endl<<"output is saved to file 'decompressedMsg.txt'";
+    cout<<endl<<"please hit any key to close the program";
+    cin.get();
 
     return 0;
 }

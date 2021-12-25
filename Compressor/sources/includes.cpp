@@ -1,8 +1,18 @@
-// #include<iostream>
-// using namespace std;
+#include<iostream>
+#include<fstream>
+#include<bitset>
+#include<sstream>
+// #include<string>
+#include "tree.hpp"
+using namespace std;
 
+string menu(){
+    cout << "Welcome to Message Compressor!\n\n\tPlease enter the name of file with its extension to be compressed: ";
+    string fileName;
+    cin>>fileName;
+    return fileName;
+}
 
-//  int len=0;
 
 void swap(freq* a, freq* b) 
 { 
@@ -74,4 +84,29 @@ int getInput(freq* chr, string inputStr){
     quickSort(chr, 0, chrCount-1);
 
     return chrCount;
+}
+
+void outBuffer(unsigned char *buff, int *count, ofstream &file, bool target){
+    *buff <<= 1;
+    if(target){
+        *buff |= 0b00000001;
+    }
+
+    *count = *count +1;
+    if (*count == 8){
+        cout<<*buff;
+        file<<*buff;
+        *count = 0;
+        *buff = 0;
+    }
+}
+
+void encodeMsg(ofstream &file, enc *table, int len, char target, unsigned char *buff, int *buffCount){
+    for (int i = 0; i<len; i++){
+        if(target == table[i].c){
+            for(int j = table[i].len-1; j>=0; j--)
+                outBuffer(buff, buffCount, file, table[i].code[j]);
+        }
+    }
+    return;
 }

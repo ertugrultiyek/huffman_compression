@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include<iostream>
+#include<bitset>
 
 typedef std::bitset<8> Byte;
 // typedef std::bitset<2> Command;
@@ -12,7 +12,7 @@ public:
 	char item;
 	Node* left;
 	Node* right;
-	
+
 	Node(char c, Node *lft, Node *rgt);
 };
 

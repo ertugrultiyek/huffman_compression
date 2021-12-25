@@ -1,19 +1,22 @@
-#include "sources/encode.cpp"
-
-
+#include "sources/includes.cpp"
 
 int main(){
     unsigned char buffer = 0x00;
     int buffCount = 0;
 
+    ifstream inputFile;
+    inputFile.open(menu(), ios::in);
 
-    string inputStr = "abcabcddeeabceeeeddee";    // get input data
-    inputStr.push_back(0x00);
+    stringstream fileBuffer;
+    fileBuffer << inputFile.rdbuf();
 
-    ofstream unc;
-    unc.open("uncompressed.txt", ios::out);    // open the output file
-    unc<<inputStr;
-    unc.close();
+    string inputStr = fileBuffer.str();    // get input data
+    inputStr.push_back((char)0);
+
+    // ofstream unc;
+    // unc.open("uncompressed.txt", ios::out);    // open the output file
+    // unc<<inputStr;
+    // unc.close();
 
     freq chrArr[inputStr.size()];
     int len = getInput(chrArr, inputStr);   // get number of unique characters and frequency of them
