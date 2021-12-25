@@ -11,15 +11,15 @@ int main(){
     file.open("compressedMsg.txt");
     Buffer reader = Buffer();
 
-    for(int i = 0; i<21*8; i++){
-        cout << reader.getCommand(file);
-    }
+    // for(int i = 0; i<21*8; i++){
+    //     cout << reader.getCommand(file);
+    // }
 
-    // Tree agac = Tree(&reader, file);
+    Tree agac = Tree(&reader, file);
 
 
 
-    // cout<<reader.decodeMsg(agac.root, file);
+    cout<<reader.decodeMsg(agac.root, file);
 
 
     return 0;

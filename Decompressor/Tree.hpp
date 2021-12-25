@@ -17,21 +17,15 @@ public:
 //---------------------------------------------------------------------\\ 
 
 Node* Tree::constructTree(Buffer *reader, ifstream &file){
+    Node *parent = new Node(0, nullptr, nullptr);
     bool cmd = reader->getCommand(file);
     if(cmd){
-        return nullptr;
-    }
-    Node *parent = new Node(0, constructTree(reader, file), nullptr);
-    if (parent->left == nullptr){
         char c = reader->getChar(file);
         parent->item = c;
     }
     else{
-        parent->right = new Node(0, constructTree(reader, file), nullptr);
-        if (parent->right->left == nullptr){
-            char c = reader->getChar(file);
-            parent->right->item = c;
-        }
+        parent->left = constructTree(reader, file);
+        parent->right = constructTree(reader, file);
     }
     return parent;
 }
